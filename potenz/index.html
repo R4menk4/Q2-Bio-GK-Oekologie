@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interaktiver Lernweg zu physiologischer und ökologischer Potenz am Beispiel von Waldkiefer und Rotbuche.">
+  <title>Lernweg ökologische Potenz</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23078898'/%3E%3Cpath d='M16 46c8-5 10-16 16-29 7 13 9 24 16 29H16Z' fill='%23fff'/%3E%3Cpath d='M32 17v31' stroke='%231d5f55' stroke-width='4'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --ink:#17242a; --muted:#5d6a70; --blue:#1688ba; --petrol:#078898;
+      --petrol-dark:#066b77; --line:#cbd4d7; --panel:#f4f6f6; --white:#fff;
+      --dry:#f4e7c9; --mid:#eaf2ef; --wet:#dcecf2; --good:#166a4b;
+      --good-bg:#e6f4ed; --warn:#8a5a00; --warn-bg:#fff3d4; --bad:#a33d32;
+      --shadow:0 16px 42px rgba(23,36,42,.10); --radius:18px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background:#eef3f4; font-size:16px; line-height:1.48; }
+    button,input,textarea,select { font:inherit; }
+    button { cursor:pointer; }
+    .shell { min-height:100vh; display:grid; grid-template-columns:280px minmax(0,1fr); }
+    .rail { position:sticky; top:0; height:100vh; padding:28px 22px; color:white; background:linear-gradient(165deg,#075966 0%,#078898 56%,#126b72 100%); }
+    .brand { display:flex; gap:12px; align-items:center; margin-bottom:26px; }
+    .brandmark { width:44px; height:44px; display:grid; place-items:center; border-radius:13px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.36); font-size:25px; }
+    .eyebrow { margin:0; font-size:.78rem; letter-spacing:.11em; text-transform:uppercase; opacity:.78; }
+    .brand h1 { margin:1px 0 0; font-size:1.06rem; line-height:1.2; }
+    .progress-label { display:flex; justify-content:space-between; gap:12px; font-size:.88rem; margin-bottom:8px; }
+    .progress-track { height:8px; background:rgba(255,255,255,.2); border-radius:99px; overflow:hidden; }
+    .progress-fill { height:100%; width:0; border-radius:inherit; background:#fff; transition:width .25s ease; }
+    .steps { margin:24px 0 0; padding:0; list-style:none; display:grid; gap:6px; }
+    .step-btn { width:100%; display:grid; grid-template-columns:31px 1fr 18px; gap:10px; align-items:center; padding:10px; border:0; border-radius:12px; color:white; background:transparent; text-align:left; }
+    .step-btn:hover,.step-btn:focus-visible { background:rgba(255,255,255,.12); outline:2px solid transparent; }
+    .step-btn[aria-current="step"] { background:#fff; color:#075966; box-shadow:0 8px 24px rgba(0,0,0,.13); }
+    .step-no { width:31px; height:31px; border-radius:50%; display:grid; place-items:center; border:1px solid currentColor; font-weight:700; }
+    .step-title { font-size:.9rem; font-weight:700; line-height:1.2; }
+    .step-state { font-weight:700; opacity:.9; }
+    .rail-note { position:absolute; left:22px; right:22px; bottom:22px; padding-top:16px; border-top:1px solid rgba(255,255,255,.25); font-size:.78rem; opacity:.82; }
+    main { min-width:0; padding:28px clamp(20px,4vw,58px) 48px; }
+    .topbar { max-width:980px; margin:0 auto 18px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+    .topbar p { margin:0; color:var(--muted); }
+    .home-link { color:var(--petrol-dark); font-weight:700; text-decoration:none; white-space:nowrap; }
+    .home-link:hover { text-decoration:underline; }
+    .reset { border:1px solid var(--line); background:white; color:var(--ink); border-radius:10px; padding:8px 12px; font-weight:700; }
+    .reset:hover { border-color:var(--petrol); color:var(--petrol-dark); }
+    .workspace { max-width:980px; margin:auto; background:white; border:1px solid #dce3e5; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+    .stage { display:none; }
+    .stage.active { display:block; animation:fade .18s ease; }
+    @keyframes fade { from{opacity:.5;transform:translateY(4px)} to{opacity:1;transform:none} }
+    .stage-head { padding:28px 32px 22px; border-bottom:1px solid var(--line); background:linear-gradient(120deg,#fff 10%,#f2f8f9 100%); }
+    .kicker { margin:0 0 8px; color:var(--petrol-dark); font-weight:700; font-size:.86rem; letter-spacing:.05em; text-transform:uppercase; }
+    h2 { margin:0; font-size:clamp(1.55rem,3vw,2.1rem); line-height:1.16; color:var(--blue); }
+    .stage-intro { margin:10px 0 0; max-width:760px; color:var(--muted); }
+    .stage-body { padding:26px 32px 30px; }
+    .worksheet-tag { display:inline-flex; align-items:center; gap:8px; margin:0 0 18px; padding:7px 11px; border-radius:999px; color:#25424b; background:#e7f2f5; font-size:.86rem; font-weight:700; }
+    .callout { padding:16px 18px; border:1px solid #aeb9bd; border-radius:12px; background:#f0f1f1; margin:0 0 20px; }
+    .callout strong { display:block; margin-bottom:4px; }
+    .question { margin:22px 0; padding:20px; border:1px solid var(--line); border-radius:14px; background:#fff; }
+    .question h3 { margin:0 0 8px; font-size:1.05rem; }
+    .question p { margin:0 0 14px; }
+    .options { display:grid; gap:9px; }
+    .option { display:flex; gap:10px; align-items:flex-start; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:#fafcfc; }
+    .option:hover { border-color:#7dabb3; }
+    .option input { margin-top:4px; accent-color:var(--petrol); }
+    .short-answer { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .short-answer input { width:120px; padding:10px 12px; border:1px solid var(--line); border-radius:9px; }
+    input:focus-visible,button:focus-visible { outline:3px solid rgba(22,136,186,.28); outline-offset:2px; }
+    .check-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+    .primary,.secondary { border-radius:10px; padding:10px 15px; font-weight:700; }
+    .primary { border:1px solid var(--petrol); background:var(--petrol); color:white; }
+    .primary:hover { background:var(--petrol-dark); }
+    .secondary { border:1px solid var(--line); background:white; color:var(--ink); }
+    .feedback { display:none; margin-top:13px; padding:11px 13px; border-radius:10px; font-weight:700; }
+    .feedback.show { display:block; }
+    .feedback.good { color:var(--good); background:var(--good-bg); }
+    .feedback.try { color:var(--warn); background:var(--warn-bg); }
+    .data-wrap { overflow-x:auto; margin:18px 0; }
+    table { width:100%; border-collapse:collapse; min-width:690px; }
+    th,td { padding:10px 11px; border:1px solid #b9c4c7; text-align:center; }
+    th { color:#fff; background:var(--petrol); }
+    td:first-child,th:first-child { text-align:left; font-weight:700; }
+    tbody tr:nth-child(odd) { background:#edf5f1; }
+    .model-note { margin:-8px 0 18px; color:var(--muted); font-size:.9rem; font-style:italic; }
+    .chart { margin:18px 0; padding:14px; border:1px solid var(--line); border-radius:14px; background:#fbfcfc; overflow-x:auto; }
+    .chart svg { display:block; min-width:650px; width:100%; height:auto; }
+    .legend { display:flex; gap:18px; flex-wrap:wrap; font-size:.88rem; margin-top:8px; }
+    .legend span::before { content:""; display:inline-block; width:24px; height:4px; margin-right:7px; vertical-align:middle; border-radius:5px; background:var(--petrol); }
+    .legend span:last-child::before { background:#c27035; }
+    .compare-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .term-card { padding:17px; border-radius:13px; background:var(--panel); border:1px solid var(--line); }
+    .term-card h3 { margin:0 0 8px; font-size:1.05rem; }
+    .comparison-table { table-layout:fixed; min-width:760px; }
+    .comparison-table th:first-child { width:27%; }
+    .comparison-table td { height:84px; }
+    .comparison-table .drop-cell { background:#fff; }
+    .comparison-table .drop-cell.help-enabled { border:2px dashed #7dabb3; background:#f7fbfb; }
+    .comparison-table .drop-cell.drag-over { border-color:var(--petrol); background:#e7f2f5; }
+    .help-instruction { margin:16px 0 10px; font-weight:700; color:var(--petrol-dark); }
+    .answer-bank { display:flex; flex-wrap:wrap; gap:9px; padding:14px; border:1px solid var(--line); border-radius:12px; background:var(--panel); }
+    .answer-bank[hidden] { display:none; }
+    .drag-answer { padding:9px 11px; border:1px solid #7dabb3; border-radius:9px; background:#fff; color:var(--ink); font-weight:700; cursor:grab; }
+    .drag-answer:active { cursor:grabbing; }
+    .drag-answer.selected { outline:3px solid rgba(22,136,186,.32); border-color:var(--petrol); }
+    .drop-cell .drag-answer { width:100%; cursor:grab; }
+    .material-b-table { table-layout:fixed; }
+    .material-b-table th:first-child,.material-b-table td:first-child { width:22%; }
+    .sort-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .sort-card { padding:15px; border:1px solid var(--line); border-radius:12px; background:#fafcfc; }
+    .sort-card p { margin:0 0 10px; font-weight:700; }
+    .toggle-pair { display:flex; gap:7px; }
+    .toggle-pair button { flex:1; border:1px solid var(--line); background:white; border-radius:8px; padding:8px; }
+    .toggle-pair button.selected { color:white; background:var(--petrol); border-color:var(--petrol); }
+    .moisture-band { display:grid; grid-template-columns:repeat(6,1fr); min-width:720px; margin-top:14px; }
+    .moisture-band > div { padding:9px 5px; text-align:center; font-size:.8rem; font-weight:700; border:1px solid rgba(23,36,42,.13); }
+    .moisture-band > div:nth-child(1),.moisture-band > div:nth-child(2){background:var(--dry)}
+    .moisture-band > div:nth-child(3),.moisture-band > div:nth-child(4){background:var(--mid)}
+    .moisture-band > div:nth-child(5),.moisture-band > div:nth-child(6){background:var(--wet)}
+    .nav-row { display:flex; justify-content:space-between; gap:12px; padding:18px 32px; border-top:1px solid var(--line); background:#fafcfc; }
+    .nav-row button:disabled { opacity:.4; cursor:not-allowed; }
+    .completion { display:none; margin-top:22px; padding:20px; border-radius:14px; background:linear-gradient(120deg,#e6f4ed,#e6f2f5); border:1px solid #9bc6b4; }
+    .completion.show { display:block; }
+    .completion h3 { margin:0 0 6px; }
+    .mobile-progress { display:none; }
+    @media (max-width:800px) {
+      .shell { display:block; }
+      .rail { position:static; height:auto; padding:18px; }
+      .brand { margin-bottom:14px; }
+      .steps,.rail-note { display:none; }
+      .mobile-progress { display:block; margin-top:13px; }
+      main { padding:18px 12px 32px; }
+      .topbar { align-items:flex-start; }
+      .stage-head,.stage-body { padding-left:20px; padding-right:20px; }
+      .nav-row { padding:15px 20px; }
+      .compare-grid,.sort-grid { grid-template-columns:1fr; }
+    }
+    @media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto!important;animation:none!important;transition:none!important} }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="Lernschritte">
+      <div class="brand"><div class="brandmark" aria-hidden="true">♧</div><div><p class="eyebrow">Biologie GK Q2</p><h1>Ökologische Potenz</h1></div></div>
+      <div class="progress-label"><span>Dein Lernweg</span><strong id="progressText">0 von 6</strong></div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <ol class="steps" id="stepNav"></ol>
+      <div class="mobile-progress" id="mobileStep">Schritt 1 von 6</div>
+      <p class="rail-note">Nutze das Programm parallel zum Arbeitsblatt. Ausführliche Antworten gehören auf das Blatt.</p>
+    </aside>
+
+    <main>
+      <div class="topbar"><a class="home-link" href="../index.html">← Ökologie</a><p>Leitfrage: Warum entspricht das natürliche Vorkommen nicht immer dem physiologischen Toleranzbereich?</p><button class="reset" id="resetBtn" type="button">Fortschritt zurücksetzen</button></div>
+      <div class="workspace">
+        <section class="stage active" data-stage="0">
+          <header class="stage-head"><p class="kicker">Schritt 1 · Vorwissen aktivieren</p><h2>Was zeigt eine Toleranzkurve?</h2><p class="stage-intro">Rufe dir die letzte Stunde in Erinnerung. Entscheidend ist, unter welchen Bedingungen die Kurve entstanden ist.</p></header>
+          <div class="stage-body">
+            <span class="worksheet-tag">Arbeitsblatt · Rückblickkasten</span>
+            <div class="callout"><strong>Physiologische Potenz</strong>Bereich eines abiotischen Umweltfaktors, in dem eine Art ohne Konkurrenz dauerhaft überleben und sich fortpflanzen kann.</div>
+            <div class="question" data-q="q1"><h3>Welche Bedingung gehört zwingend zur physiologischen Potenz?</h3><div class="options">
+              <label class="option"><input type="radio" name="q1" value="a"> Es wirken alle biotischen Faktoren wie in der Natur.</label>
+              <label class="option"><input type="radio" name="q1" value="b"> Konkurrenz durch andere Arten ist ausgeschlossen.</label>
+              <label class="option"><input type="radio" name="q1" value="c"> Der Umweltfaktor muss immer im Optimum liegen.</label>
+            </div><div class="check-row"><button class="primary check-choice" data-answer="b" type="button">Antwort prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="question" data-q="q1b"><h3>Was kennzeichnet das Optimum einer Toleranzkurve?</h3><div class="options">
+              <label class="option"><input type="radio" name="q1b" value="a"> Dort erreicht die Lebensleistung ihren höchsten Wert.</label>
+              <label class="option"><input type="radio" name="q1b" value="b"> Dort kann die Art gerade noch überleben, sich aber nicht fortpflanzen.</label>
+              <label class="option"><input type="radio" name="q1b" value="c"> Dort endet der Toleranzbereich.</label>
+            </div><div class="check-row"><button class="primary check-choice" data-answer="a" type="button">Antwort prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="question" data-q="q1c"><h3>Welche Aussage beschreibt das Pessimum?</h3><div class="options">
+              <label class="option"><input type="radio" name="q1c" value="a"> Bereich um das Optimum mit besonders hoher Lebensleistung.</label>
+              <label class="option"><input type="radio" name="q1c" value="b"> Randbereich, in dem Überleben noch möglich ist, Fortpflanzung jedoch nicht.</label>
+              <label class="option"><input type="radio" name="q1c" value="c"> Bereich außerhalb von Minimum und Maximum.</label>
+            </div><div class="check-row"><button class="primary check-choice" data-answer="b" type="button">Antwort prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="question" data-q="q1d"><h3>Was bezeichnet das Präferendum?</h3><div class="options">
+              <label class="option"><input type="radio" name="q1d" value="a"> Den bevorzugten Bereich um das Optimum.</label>
+              <label class="option"><input type="radio" name="q1d" value="b"> Nur den exakten Wert des Maximums.</label>
+              <label class="option"><input type="radio" name="q1d" value="c"> Beide Pessimumbereiche zusammen.</label>
+            </div><div class="check-row"><button class="primary check-choice" data-answer="a" type="button">Antwort prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+          </div><div class="nav-row"><button class="secondary prev" disabled type="button">Zurück</button><button class="primary next" type="button">Weiter</button></div>
+        </section>
+
+        <section class="stage" data-stage="1">
+          <header class="stage-head"><p class="kicker">Schritt 2 · Daten beschreiben</p><h2>Material A lesen</h2><p class="stage-intro">Untersuche zuerst den Befund. Erklärungen folgen erst im nächsten Schritt.</p></header>
+          <div class="stage-body">
+            <span class="worksheet-tag">Arbeitsblatt · Aufgaben ① und ②</span>
+            <div class="data-wrap"><table><thead><tr><th>Bodenfeuchtigkeit in %</th><th>15</th><th>30</th><th>45</th><th>60</th><th>75</th><th>90</th></tr></thead><tbody><tr><td>Waldkiefer allein</td><td>3</td><td>6</td><td>9</td><td>10</td><td>8</td><td>4</td></tr><tr><td>Waldkiefer mit Rotbuche</td><td>3</td><td>5</td><td>3</td><td>1</td><td>2</td><td>4</td></tr><tr><td>Rotbuche allein</td><td>0</td><td>3</td><td>8</td><td>10</td><td>9</td><td>1</td></tr><tr><td>Rotbuche mit Waldkiefer</td><td>0</td><td>3</td><td>8</td><td>9</td><td>8</td><td>1</td></tr></tbody></table></div>
+            <p class="model-note">Sämtliche Zahlenwerte sind didaktisch modellierte Daten. Die Wuchsleistung erlaubt allein keine Aussage über Fortpflanzung oder langfristiges Überleben.</p>
+            <div class="chart" aria-label="Liniendiagramm zur Wuchsleistung der Waldkiefer"><svg viewBox="0 0 720 270" role="img" aria-labelledby="chartTitle chartDesc"><title id="chartTitle">Wuchsleistung der Waldkiefer</title><desc id="chartDesc">Vergleich der Waldkiefer allein und mit Rotbuche bei sechs Bodenfeuchtigkeiten.</desc><g fill="none" stroke="#d2dadd" stroke-width="1"><path d="M55 25V225H690"/><path d="M55 185H690M55 145H690M55 105H690M55 65H690M55 25H690"/></g><g fill="#5d6a70" font-size="12"><text x="28" y="229">0</text><text x="24" y="189">2</text><text x="24" y="149">4</text><text x="24" y="109">6</text><text x="24" y="69">8</text><text x="18" y="29">10</text><text x="52" y="250">15</text><text x="174" y="250">30</text><text x="296" y="250">45</text><text x="418" y="250">60</text><text x="540" y="250">75</text><text x="670" y="250">90 %</text></g><polyline fill="none" stroke="#078898" stroke-width="5" points="58,165 180,105 302,45 424,25 546,65 680,145"/><polyline fill="none" stroke="#c27035" stroke-width="5" points="58,165 180,125 302,165 424,205 546,185 680,145"/><g fill="#078898"><circle cx="58" cy="165" r="5"/><circle cx="180" cy="105" r="5"/><circle cx="302" cy="45" r="5"/><circle cx="424" cy="25" r="5"/><circle cx="546" cy="65" r="5"/><circle cx="680" cy="145" r="5"/></g><g fill="#c27035"><circle cx="58" cy="165" r="5"/><circle cx="180" cy="125" r="5"/><circle cx="302" cy="165" r="5"/><circle cx="424" cy="205" r="5"/><circle cx="546" cy="185" r="5"/><circle cx="680" cy="145" r="5"/></g></svg><div class="legend"><span>Waldkiefer allein</span><span>Waldkiefer mit Rotbuche</span></div></div>
+            <div class="question" data-q="q2"><h3>Bei welcher Bodenfeuchtigkeit erreicht die Waldkiefer allein ihre höchste Wuchsleistung?</h3><div class="short-answer"><input inputmode="numeric" aria-label="Bodenfeuchtigkeit in Prozent" maxlength="3"><span>% Bodenfeuchtigkeit</span></div><div class="check-row"><button class="primary check-number" data-answer="60" type="button">Wert prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="question" data-q="q3"><h3>Wo ist der Unterschied zwischen „allein“ und „mit Rotbuche“ am größten?</h3><div class="options"><label class="option"><input type="radio" name="q3" value="a"> bei 15 %</label><label class="option"><input type="radio" name="q3" value="b"> bei 60 %</label><label class="option"><input type="radio" name="q3" value="c"> bei 90 %</label></div><div class="check-row"><button class="primary check-choice" data-answer="b" type="button">Antwort prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+          </div><div class="nav-row"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter</button></div>
+        </section>
+
+        <section class="stage" data-stage="2">
+          <header class="stage-head"><p class="kicker">Schritt 3 · Befund erklären</p><h2>Was verändert die Rotbuche?</h2><p class="stage-intro">Formuliere aus dem Vergleich einen Wirkungszusammenhang.</p></header>
+          <div class="stage-body"><span class="worksheet-tag">Arbeitsblatt · Aufgabe ③</span>
+            <div class="question" data-q="q4"><h3>Welche Erklärung passt zu den Daten?</h3><div class="options"><label class="option"><input type="radio" name="q4" value="a"> Die Rotbuche verändert die Bodenfeuchtigkeit von 60 % auf 15 %.</label><label class="option"><input type="radio" name="q4" value="b"> Bei mittlerer Feuchtigkeit nutzt die Rotbuche begrenzte Ressourcen erfolgreicher; die Wuchsleistung der Waldkiefer sinkt.</label><label class="option"><input type="radio" name="q4" value="c"> Die Waldkiefer besitzt bei mittlerer Feuchtigkeit keine physiologische Leistungsfähigkeit.</label></div><div class="check-row"><button class="primary check-choice" data-answer="b" type="button">Erklärung prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="callout"><strong>Merksatz</strong>Konkurrenz ist eine biotische Wechselwirkung zwischen Lebewesen, die durch die begrenzte Verfügbarkeit einer Ressource entsteht.</div>
+          </div><div class="nav-row"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter</button></div>
+        </section>
+
+        <section class="stage" data-stage="3">
+          <header class="stage-head"><p class="kicker">Schritt 4 · Versuch und Natur verbinden</p><h2>Material B deuten</h2><p class="stage-intro">Jetzt kommt eine zweite Information hinzu: das langfristige Vorkommen etablierter Bestände mit Jungpflanzen.</p></header>
+          <div class="stage-body"><span class="worksheet-tag">Arbeitsblatt · Aufgabe ④</span><div class="data-wrap"><table class="material-b-table"><thead><tr><th rowspan="2">Bodenfeuchtigkeit</th><th>sehr trocken</th><th>trocken</th><th>mittelfeucht</th><th>mäßig feucht</th><th>feucht</th><th>sehr feucht</th></tr><tr><th>15 %</th><th>30 %</th><th>45 %</th><th>60 %</th><th>75 %</th><th>90 %</th></tr></thead><tbody><tr><td>Waldkiefer</td><td>häufig</td><td>häufig</td><td>selten</td><td>selten</td><td>selten</td><td>häufig</td></tr><tr><td>Rotbuche</td><td>fehlt</td><td>selten</td><td>häufig</td><td>sehr häufig</td><td>häufig</td><td>fehlt</td></tr></tbody></table></div><p class="model-note">Verteilungsmuster und Häufigkeitsangaben sind didaktisch modelliert.</p>
+            <div class="question" data-q="q5"><h3>Warum ist die Waldkiefer bei 60 % Bodenfeuchtigkeit selten, obwohl sie dort allein besonders gut wächst?</h3><div class="options"><label class="option"><input type="radio" name="q5" value="a"> Die physiologische Potenz verschwindet in der Natur vollständig.</label><label class="option"><input type="radio" name="q5" value="b"> Die Rotbuche ist dort leistungs- und konkurrenzstark und schränkt den nutzbaren Bereich der Waldkiefer ein.</label><label class="option"><input type="radio" name="q5" value="c"> 60 % Bodenfeuchtigkeit ist für die Waldkiefer ein Pessimum.</label></div><div class="check-row"><button class="primary check-choice" data-answer="b" type="button">Deutung prüfen</button></div><div class="feedback" aria-live="polite"></div></div>
+          </div><div class="nav-row"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter</button></div>
+        </section>
+
+        <section class="stage" data-stage="4">
+          <header class="stage-head"><p class="kicker">Schritt 5 · Begriffe trennen</p><h2>Abiotisch oder biotisch?</h2><p class="stage-intro">Ordne nicht die Ressource, sondern jeweils den beschriebenen Einfluss ein.</p></header>
+          <div class="stage-body"><span class="worksheet-tag">Arbeitsblatt · Material C und Aufgabe ⑤</span><div class="sort-grid" id="sortGrid">
+            <div class="sort-card" data-answer="abiotisch"><p>Bodenfeuchtigkeit</p><div class="toggle-pair"><button type="button" data-value="abiotisch">abiotisch</button><button type="button" data-value="biotisch">biotisch</button></div></div>
+            <div class="sort-card" data-answer="biotisch"><p>Waldkiefer konkurriert mit Rotbuche</p><div class="toggle-pair"><button type="button" data-value="abiotisch">abiotisch</button><button type="button" data-value="biotisch">biotisch</button></div></div>
+            <div class="sort-card" data-answer="abiotisch"><p>verfügbares Wasser</p><div class="toggle-pair"><button type="button" data-value="abiotisch">abiotisch</button><button type="button" data-value="biotisch">biotisch</button></div></div>
+            <div class="sort-card" data-answer="biotisch"><p>Konkurrenz um Wasser</p><div class="toggle-pair"><button type="button" data-value="abiotisch">abiotisch</button><button type="button" data-value="biotisch">biotisch</button></div></div>
+          </div><div class="check-row"><button class="primary" id="checkSort" type="button">Zuordnung prüfen</button></div><div class="feedback" id="sortFeedback" aria-live="polite"></div></div>
+          <div class="nav-row"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter</button></div>
+        </section>
+
+        <section class="stage" data-stage="5">
+          <header class="stage-head"><p class="kicker">Schritt 6 · Sichern und beurteilen</p><h2>Zwei Potenzen, zwei Bedingungen</h2><p class="stage-intro">Führe die Materialien zu einer Antwort auf die Leitfrage zusammen.</p></header>
+          <div class="stage-body"><span class="worksheet-tag">Arbeitsblatt · Aufgaben ⑥ und ⑦</span><div class="callout"><strong>Leitfrage</strong>Warum entspricht das natürliche Vorkommen nicht immer dem physiologischen Toleranzbereich?</div>
+            <div class="data-wrap"><table class="comparison-table" id="potencyTable"><thead><tr><th>Merkmal</th><th>Physiologische Potenz</th><th>Ökologische Potenz</th></tr></thead><tbody>
+              <tr><td>Konkurrenzbedingungen</td><td class="drop-cell" data-slot="phys-konkurrenz" aria-label="Physiologische Potenz: Konkurrenzbedingungen"></td><td class="drop-cell" data-slot="oek-konkurrenz" aria-label="Ökologische Potenz: Konkurrenzbedingungen"></td></tr>
+              <tr><td>Typischer Umfang</td><td class="drop-cell" data-slot="phys-umfang" aria-label="Physiologische Potenz: typischer Umfang"></td><td class="drop-cell" data-slot="oek-umfang" aria-label="Ökologische Potenz: typischer Umfang"></td></tr>
+              <tr><td>Beleg im Modell</td><td class="drop-cell" data-slot="phys-beleg" aria-label="Physiologische Potenz: Beleg im Modell"></td><td class="drop-cell" data-slot="oek-beleg" aria-label="Ökologische Potenz: Beleg im Modell"></td></tr>
+              <tr><td>Bedeutung für das Vorkommen</td><td class="drop-cell" data-slot="phys-bedeutung" aria-label="Physiologische Potenz: Bedeutung für das Vorkommen"></td><td class="drop-cell" data-slot="oek-bedeutung" aria-label="Ökologische Potenz: Bedeutung für das Vorkommen"></td></tr>
+            </tbody></table></div>
+            <div class="check-row"><button class="secondary" id="enablePotencyHelp" type="button">Hilfe: Antworten per Drag &amp; Drop zuordnen</button></div>
+            <div id="potencyHelp" hidden><p class="help-instruction">Ziehe die vorgegebenen Antworten per Drag &amp; Drop in die korrekten Felder. Auf einem Touchgerät kannst du erst eine Antwort und dann das Zielfeld antippen.</p><div class="answer-bank" id="answerBank">
+              <button class="drag-answer" id="answer-phys-konkurrenz" data-target="phys-konkurrenz" draggable="true" type="button">ohne Konkurrenz</button>
+              <button class="drag-answer" id="answer-oek-konkurrenz" data-target="oek-konkurrenz" draggable="true" type="button">unter Konkurrenzbedingungen</button>
+              <button class="drag-answer" id="answer-phys-umfang" data-target="phys-umfang" draggable="true" type="button">breiter möglicher Bereich</button>
+              <button class="drag-answer" id="answer-oek-umfang" data-target="oek-umfang" draggable="true" type="button">häufig kleiner oder verschoben</button>
+              <button class="drag-answer" id="answer-phys-beleg" data-target="phys-beleg" draggable="true" type="button">Material A: Waldkiefer allein</button>
+              <button class="drag-answer" id="answer-oek-beleg" data-target="oek-beleg" draggable="true" type="button">Material A und B: gemeinsame Kultur und natürliches Verteilungsmuster</button>
+              <button class="drag-answer" id="answer-phys-bedeutung" data-target="phys-bedeutung" draggable="true" type="button">zeigt, was grundsätzlich möglich ist</button>
+              <button class="drag-answer" id="answer-oek-bedeutung" data-target="oek-bedeutung" draggable="true" type="button">beschreibt den unter Konkurrenz tatsächlich nutzbaren Bereich</button>
+            </div><div class="check-row"><button class="primary" id="checkPotencyTable" type="button">Zuordnung prüfen</button><button class="secondary" id="resetPotencyHelp" type="button">Zuordnung zurücksetzen</button></div><div class="feedback" id="potencyFeedback" aria-live="polite"></div></div>
+            <div class="question" data-q="q6"><h3>Beantworte die Leitfrage in 2–3 Sätzen auf deinem Arbeitsblatt.</h3><p>Verwende mindestens die Begriffe <strong>abiotische Faktoren</strong>, <strong>Konkurrenz</strong> und <strong>physiologischer Toleranzbereich</strong>.</p><div class="check-row"><button class="primary worksheet-done" type="button">Auf dem Arbeitsblatt bearbeitet</button></div><div class="feedback" aria-live="polite"></div></div>
+            <div class="completion" id="completion"><h3>Lernweg abgeschlossen</h3><p>Übertrage deine ausformulierte Beurteilung jetzt in Aufgabe ⑦. Prüfe dabei: Befund genannt, Konkurrenz erklärt, Urteil zur Aussage formuliert.</p></div>
+          </div><div class="nav-row"><button class="secondary prev" type="button">Zurück</button><button class="primary" id="finishBtn" type="button">Lernweg abschließen</button></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const titles = ['Vorwissen','Material A','Konkurrenz','Material B','Faktoren','Sicherung'];
+      const storageKey = 'lernweg-oekologische-potenz-v1';
+      let state = { stage:0, completed:[], correct:{} };
+      try { state = { ...state, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; } catch (_) {}
+      state.stage = Math.max(0, Math.min(5, Number(state.stage) || 0));
+      state.completed = Array.isArray(state.completed) ? state.completed : [];
+      state.correct = state.correct && typeof state.correct === 'object' ? state.correct : {};
+      const stages = [...document.querySelectorAll('.stage')];
+      const nav = document.getElementById('stepNav');
+      const save = () => localStorage.setItem(storageKey, JSON.stringify(state));
+      const setFeedback = (box, good, text) => { box.className = 'feedback show ' + (good ? 'good' : 'try'); box.textContent = text; };
+      const markQuestion = (id) => { state.correct[id] = true; save(); };
+      const requiredForStage = [ ['q1','q1b','q1c','q1d'], ['q2','q3'], ['q4'], ['q5'], ['sort'], ['q6'] ];
+      const isStageReady = i => requiredForStage[i].every(id => state.correct[id]);
+      function renderNav(){
+        nav.innerHTML = '';
+        titles.forEach((title,i) => { const li=document.createElement('li'); const b=document.createElement('button'); b.type='button'; b.className='step-btn'; b.dataset.stage=i; b.setAttribute('aria-current',i===state.stage?'step':'false'); b.innerHTML=`<span class="step-no">${i+1}</span><span class="step-title">${title}</span><span class="step-state">${state.completed.includes(i)?'✓':''}</span>`; b.addEventListener('click',()=>go(i)); li.appendChild(b); nav.appendChild(li); });
+        const done = new Set(state.completed).size; document.getElementById('progressText').textContent=`${done} von 6`; document.getElementById('progressFill').style.width=`${done/6*100}%`; document.getElementById('mobileStep').textContent=`Schritt ${state.stage+1} von 6 · ${titles[state.stage]}`;
+      }
+      function go(i){ state.stage=Math.max(0,Math.min(5,i)); stages.forEach((s,n)=>s.classList.toggle('active',n===state.stage)); renderNav(); save(); window.scrollTo({top:0,behavior:'smooth'}); }
+      function completeAndNext(){ const i=state.stage; if(isStageReady(i) && !state.completed.includes(i)) state.completed.push(i); save(); if(i<5) go(i+1); else renderNav(); }
+      document.querySelectorAll('.next').forEach(b=>b.addEventListener('click',()=>{ if(!isStageReady(state.stage)){ const first=stages[state.stage].querySelector('.feedback'); if(first) setFeedback(first,false,'Prüfe zuerst die Aufgabe in diesem Schritt.'); return; } completeAndNext(); }));
+      document.querySelectorAll('.prev').forEach(b=>b.addEventListener('click',()=>go(state.stage-1)));
+      document.querySelectorAll('.check-choice').forEach(btn=>btn.addEventListener('click',()=>{ const q=btn.closest('.question'); const chosen=q.querySelector('input:checked'); const feedback=q.querySelector('.feedback'); const good=Boolean(chosen)&&chosen.value===btn.dataset.answer; setFeedback(feedback,good,good?'Richtig.':'Falsch – probiere es noch einmal.'); if(good) markQuestion(q.dataset.q); }));
+      document.querySelectorAll('.check-number').forEach(btn=>btn.addEventListener('click',()=>{ const q=btn.closest('.question'); const value=q.querySelector('input').value.trim().replace(',','.'); const good=value===btn.dataset.answer; setFeedback(q.querySelector('.feedback'),good,good?'Richtig.':'Falsch – probiere es noch einmal.'); if(good) markQuestion(q.dataset.q); }));
+      document.querySelectorAll('.toggle-pair button').forEach(btn=>btn.addEventListener('click',()=>{ const pair=btn.parentElement; pair.querySelectorAll('button').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); pair.dataset.value=btn.dataset.value; }));
+      document.getElementById('checkSort').addEventListener('click',()=>{ const cards=[...document.querySelectorAll('.sort-card')]; const good=cards.every(c=>c.querySelector('.toggle-pair').dataset.value===c.dataset.answer); setFeedback(document.getElementById('sortFeedback'),good,good?'Richtig.':'Falsch – probiere es noch einmal.'); if(good) markQuestion('sort'); });
+      const helpButton=document.getElementById('enablePotencyHelp'); const helpPanel=document.getElementById('potencyHelp'); const answerBank=document.getElementById('answerBank'); const dropCells=[...document.querySelectorAll('.drop-cell')]; const dragAnswers=[...document.querySelectorAll('.drag-answer')]; let selectedAnswer=null;
+      const clearAnswerSelection=()=>{ dragAnswers.forEach(x=>x.classList.remove('selected')); selectedAnswer=null; };
+      const placeAnswer=(answer,cell)=>{ const existing=cell.querySelector('.drag-answer'); if(existing&&existing!==answer)answerBank.appendChild(existing); cell.appendChild(answer); clearAnswerSelection(); };
+      helpButton.addEventListener('click',()=>{ helpPanel.hidden=false; dropCells.forEach(cell=>cell.classList.add('help-enabled')); helpButton.disabled=true; helpButton.textContent='Drag-and-drop-Hilfe aktiviert'; });
+      dragAnswers.forEach(answer=>{ answer.addEventListener('dragstart',event=>{ event.dataTransfer.setData('text/plain',answer.id); event.dataTransfer.effectAllowed='move'; }); answer.addEventListener('click',()=>{ const wasSelected=answer===selectedAnswer; clearAnswerSelection(); if(!wasSelected){selectedAnswer=answer;answer.classList.add('selected');} }); });
+      dropCells.forEach(cell=>{ cell.addEventListener('dragover',event=>{ if(helpPanel.hidden)return; event.preventDefault(); cell.classList.add('drag-over'); }); cell.addEventListener('dragleave',()=>cell.classList.remove('drag-over')); cell.addEventListener('drop',event=>{ event.preventDefault(); cell.classList.remove('drag-over'); const answer=document.getElementById(event.dataTransfer.getData('text/plain')); if(answer)placeAnswer(answer,cell); }); cell.addEventListener('click',()=>{ if(selectedAnswer&&!helpPanel.hidden)placeAnswer(selectedAnswer,cell); }); });
+      document.getElementById('checkPotencyTable').addEventListener('click',()=>{ const good=dropCells.every(cell=>cell.firstElementChild?.dataset.target===cell.dataset.slot); setFeedback(document.getElementById('potencyFeedback'),good,good?'Richtig.':'Falsch – probiere es noch einmal.'); });
+      document.getElementById('resetPotencyHelp').addEventListener('click',()=>{ dragAnswers.forEach(answer=>answerBank.appendChild(answer)); clearAnswerSelection(); const feedback=document.getElementById('potencyFeedback'); feedback.className='feedback'; feedback.textContent=''; });
+      document.querySelector('.worksheet-done').addEventListener('click',e=>{ const q=e.currentTarget.closest('.question'); markQuestion('q6'); setFeedback(q.querySelector('.feedback'),true,'Aufgabe auf dem Arbeitsblatt bearbeitet.'); });
+      document.getElementById('finishBtn').addEventListener('click',()=>{ if(!isStageReady(5)){setFeedback(document.querySelector('[data-q="q6"] .feedback'),false,'Prüfe zuerst deine Antwort auf die Leitfrage.');return;} if(!state.completed.includes(5))state.completed.push(5); save(); renderNav(); document.getElementById('completion').classList.add('show'); document.getElementById('completion').scrollIntoView({behavior:'smooth',block:'center'}); });
+      document.getElementById('resetBtn').addEventListener('click',()=>{ if(!confirm('Möchtest du deinen gesamten Lernfortschritt zurücksetzen?'))return; localStorage.removeItem(storageKey); location.reload(); });
+      function registerWebMCP(){ const ctx=document.modelContext; if(!ctx?.registerTool)return; try{ ctx.registerTool({name:'read_learning_progress',title:'Lernfortschritt lesen',description:'Liest den aktuellen Schritt und die abgeschlossenen Lernschritte.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute:()=>({currentStep:state.stage+1,completedSteps:[...state.completed].sort((a,b)=>a-b).map(x=>x+1),totalSteps:6})}); ctx.registerTool({name:'open_learning_step',title:'Lernschritt öffnen',description:'Öffnet einen Lernschritt von 1 bis 6 in der sichtbaren Oberfläche.',inputSchema:{type:'object',properties:{step:{type:'integer',minimum:1,maximum:6}},required:['step'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:input=>{if(!input||!Number.isInteger(input.step)||input.step<1||input.step>6)throw new Error('step muss eine ganze Zahl von 1 bis 6 sein');go(input.step-1);return{openedStep:input.step,title:titles[input.step-1]};}}); }catch(err){ console.debug('WebMCP nicht verfügbar',err); } }
+      function shuffleAnswers(){ document.querySelectorAll('.options').forEach(group=>{ const items=[...group.children]; for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];} items.forEach(item=>group.appendChild(item)); }); const reversePairs=Math.random()<.5; if(reversePairs) document.querySelectorAll('.toggle-pair').forEach(pair=>pair.appendChild(pair.firstElementChild)); const dragItems=[...answerBank.children]; for(let i=dragItems.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[dragItems[i],dragItems[j]]=[dragItems[j],dragItems[i]];} dragItems.forEach(item=>answerBank.appendChild(item)); }
+      shuffleAnswers(); renderNav(); go(state.stage); registerWebMCP();
+    })();
+  </script>
+</body>
+</html>

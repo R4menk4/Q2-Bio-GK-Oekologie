@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Interaktiver Lernweg zur ökologischen Nische am Beispiel von Kohlmeise und Blaumeise.">
+  <title>Ein Garten zwei Nischen</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23078898'/%3E%3Cpath d='M14 46c9-6 12-19 18-31 7 12 9 25 18 31H14Z' fill='%23fff'/%3E%3Ccircle cx='43' cy='19' r='7' fill='%231688ba'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="extras.css">
+  <style>.home-link{color:#066b77;font-weight:700;text-decoration:none;white-space:nowrap}.home-link:hover{text-decoration:underline}</style>
+</head>
+<body>
+  <a class="skip" href="#content">Zum Lerninhalt</a>
+  <div class="app-shell">
+    <aside class="rail">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">⌁</span><div><p>Biologie GK Q2</p><h1>Ein Garten zwei Nischen</h1></div></div>
+      <div class="progress-copy"><span>Dein Lernweg</span><strong id="progressText">0 von 5</strong></div>
+      <div class="progress-track"><div id="progressFill"></div></div>
+      <ol id="stepNav" class="step-nav"></ol>
+      <p class="rail-note">Bearbeitungszeit etwa 35–40 Minuten<br>Dein Lernstand bleibt auf diesem Gerät gespeichert.</p>
+    </aside>
+
+    <main id="content">
+      <div class="topbar">
+        <a class="home-link" href="../index.html">← Ökologie</a>
+        <p><strong>Leitfrage:</strong> Warum können Kohlmeise und Blaumeise im selben Garten leben?</p>
+        <button class="quiet" id="resetBtn" type="button">Fortschritt zurücksetzen</button>
+      </div>
+
+      <article class="workspace">
+        <section class="stage active" data-stage="0">
+          <header class="stage-head"><p class="kicker">Schritt 1 · Ein biologisches Problem</p><h2>Zwei ähnliche Arten am selben Ort</h2><p>Kohlmeise und Blaumeise leben beide in Gärten, fressen unter anderem Insekten und nutzen Baumhöhlen. Trotzdem kommt es nicht zur vollständigen Verdrängung einer Art.</p></header>
+          <div class="stage-body"><div class="worksheet-prompt"><p class="eyebrow">Deine erste Vermutung</p><h3>Welche Erklärung hältst du vor der Untersuchung für am plausibelsten?</h3><p>Schreibe deine Vermutung begründet auf dein Arbeitsblatt.</p></div></div>
+          <div class="stage-nav"><span></span><button class="primary next" type="button">Weiter zur Gartenszene</button></div>
+        </section>
+
+        <section class="stage" data-stage="1">
+          <header class="stage-head"><p class="kicker">Schritt 2 · Erkunden</p><h2>Untersuche den Garten</h2><p>Finde acht Informationsbereiche und übertrage sie an die korrekten Stellen in die Tabelle auf deinem Arbeitsblatt.</p></header>
+          <div class="stage-body">
+            <div class="explore-toolbar"><strong id="hotspotCount">0 von 8 Informationen gefunden</strong><button class="quiet" id="hintToggle" type="button" aria-pressed="false">Suchbereiche kurz zeigen</button></div>
+            <div class="scene-wrap" id="scene">
+              <img src="assets/garten-meisen.png" alt="Detailreiche Gartenszene mit einer Kohlmeise auf einem kräftigen inneren Ast, einer Blaumeise auf dünnen äußeren Zweigen, zwei Nistkästen, einem Futterhaus und verschiedenen Nahrungstieren.">
+              <button class="hotspot" style="--x:22%;--y:22%;--w:18%;--h:25%" data-hotspot="great" aria-label="Kohlmeise untersuchen"></button>
+              <button class="hotspot" style="--x:69%;--y:3%;--w:18%;--h:26%" data-hotspot="blue" aria-label="Blaumeise untersuchen"></button>
+              <button class="hotspot" style="--x:30%;--y:37%;--w:12%;--h:14%" data-hotspot="caterpillar" aria-label="Nahrung am kräftigen Ast untersuchen"></button>
+              <button class="hotspot" style="--x:82%;--y:10%;--w:15%;--h:20%" data-hotspot="leaves" aria-label="Kleine Tiere auf den äußeren Blättern untersuchen"></button>
+              <button class="hotspot" style="--x:10%;--y:2%;--w:15%;--h:31%" data-hotspot="largeBox" aria-label="Nistkasten mit großer Öffnung untersuchen"></button>
+              <button class="hotspot" style="--x:73%;--y:29%;--w:13%;--h:24%" data-hotspot="smallBox" aria-label="Nistkasten mit kleiner Öffnung untersuchen"></button>
+              <button class="hotspot" style="--x:49%;--y:44%;--w:15%;--h:24%" data-hotspot="feeder" aria-label="Futterhaus untersuchen"></button>
+              <button class="hotspot" style="--x:23%;--y:82%;--w:27%;--h:17%" data-hotspot="ground" aria-label="Bodenbereich untersuchen"></button>
+            </div>
+            <p class="scene-note">Die Illustration bündelt typische Beobachtungen in einer Szene. Die Tiere verhalten sich flexibel; die dargestellten Unterschiede sind keine starren Grenzen.</p>
+            <section class="evidence" aria-live="polite"><div><p class="eyebrow">Fundstück</p><h3 id="evidenceTitle">Klicke auf einen interessanten Bildbereich.</h3><p id="evidenceText">Gefundene Informationen bleiben unten in deinem Notizspeicher erhalten.</p></div><span id="evidenceTag"></span></section>
+            <div id="evidenceLog" class="evidence-log" aria-label="Gesammelte Informationen"></div>
+          </div>
+          <div class="stage-nav"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter zur Auswertung</button></div>
+        </section>
+
+        <section class="stage" data-stage="2">
+          <header class="stage-head"><p class="kicker">Schritt 3 · Auswerten</p><h2>Welches Muster steckt in den Daten?</h2><p>Nutze dazu die ausgefüllte Tabelle auf deinem Arbeitsblatt.</p></header>
+          <div class="stage-body">
+            <fieldset class="claim-set"><legend>Wähle alle fachlich richtigen Aussagen.</legend>
+              <label><input type="checkbox" value="sameNiche"> Da beide Arten Insekten fressen und in Höhlen brüten, sind ihre ökologischen Nischen weitgehend identisch.</label>
+              <label><input type="checkbox" value="sameHabitat"> Kohlmeise und Blaumeise können denselben Lebensraum nutzen.</label>
+              <label><input type="checkbox" value="traitIsNiche"> Die unterschiedliche Körpergröße ist jeweils bereits die ökologische Nische der Art.</label>
+              <label><input type="checkbox" value="reduce"> Die Nutzung unterschiedlicher Bereiche kann die Konkurrenz verringern, ohne sie vollständig aufzuheben.</label>
+              <label><input type="checkbox" value="coexist"> Eine teilweise unterschiedliche Ressourcennutzung kann die Koexistenz beider Arten begünstigen.</label>
+            </fieldset>
+            <button class="primary" id="checkClaims" type="button">Aussagen prüfen</button>
+            <div class="feedback" id="claimFeedback" aria-live="polite"></div>
+            <div class="concept-strip" id="patternStrip" hidden><span>ähnliche Ansprüche</span><b>→</b><span>Nischenüberlappung</span><b>+</b><span>unterschiedliche Nutzung</span><b>→</b><span>weniger Konkurrenz</span></div>
+          </div>
+          <div class="stage-nav"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter zum Fachbegriff</button></div>
+        </section>
+
+        <section class="stage" data-stage="3">
+          <header class="stage-head"><p class="kicker">Schritt 4 · Begriffe bilden</p><h2>Lebensraum ist nicht gleich Nische</h2><p>Ordne jeder Beschreibung den passenden Fachbegriff zu.</p></header>
+          <div class="stage-body">
+            <div class="mapping-grid">
+              <label><span>Vorkommen am selben Ort</span><b aria-hidden="true">→</b><select data-term="habitat"><option value="">Begriff wählen</option><option value="overlap">Nischenüberlappung</option><option value="niche">ökologische Nische</option><option value="habitat">Lebensraum</option><option value="differentiation">Nischendifferenzierung</option></select></label>
+              <label><span>teilweise gleiche Ansprüche</span><b aria-hidden="true">→</b><select data-term="overlap"><option value="">Begriff wählen</option><option value="differentiation">Nischendifferenzierung</option><option value="habitat">Lebensraum</option><option value="overlap">Nischenüberlappung</option><option value="niche">ökologische Nische</option></select></label>
+              <label><span>unterschiedliche Ressourcennutzung</span><b aria-hidden="true">→</b><select data-term="differentiation"><option value="">Begriff wählen</option><option value="niche">ökologische Nische</option><option value="overlap">Nischenüberlappung</option><option value="differentiation">Nischendifferenzierung</option><option value="habitat">Lebensraum</option></select></label>
+              <label><span>Gesamtheit der Umweltansprüche und Umweltbeziehungen</span><b aria-hidden="true">→</b><select data-term="niche"><option value="">Begriff wählen</option><option value="habitat">Lebensraum</option><option value="niche">ökologische Nische</option><option value="differentiation">Nischendifferenzierung</option><option value="overlap">Nischenüberlappung</option></select></label>
+            </div>
+            <button class="primary" id="checkTerms" type="button">Zuordnung prüfen</button><div class="feedback" id="termFeedback" aria-live="polite"></div>
+          </div>
+          <div class="stage-nav"><button class="secondary prev" type="button">Zurück</button><button class="primary next" type="button">Weiter zum Transfer</button></div>
+        </section>
+
+        <section class="stage" data-stage="4">
+          <header class="stage-head"><p class="kicker">Schritt 5 · Abschluss und Transfer</p><h2>Wenn der Garten eintöniger wird</h2><p>Ein Garten wird stark verändert: Dünne äußere Zweige werden regelmäßig entfernt, alte Bäume verschwinden und es gibt nur noch Nistkästen mit großen Öffnungen.</p></header>
+          <div class="stage-body">
+            <div class="worksheet-prompt"><p class="eyebrow">Zurück zu deiner Vermutung</p><p>Überprüfe deine zuvor aufgestellte Vermutung und korrigiere sie, wenn nötig. Nutze die neu gelernten Fachbegriffe.</p></div>
+            <fieldset class="claim-set"><legend>Welche Folgen sind fachlich plausibel?</legend>
+              <label><input type="checkbox" value="nestCompetition"> Die Konkurrenz um geeignete Höhlen kann zunehmen.</label>
+              <label><input type="checkbox" value="greatExtinct"> Die Kohlmeise stirbt dadurch zwangsläufig aus.</label>
+              <label><input type="checkbox" value="blueLoss"> Die Blaumeise verliert einen häufig genutzten Suchbereich.</label>
+              <label><input type="checkbox" value="lessOverlap"> Die Nischenüberlappung beim Nistplatz nimmt ab, weil beide Arten große Öffnungen nutzen können.</label>
+              <label><input type="checkbox" value="diversity"> Weniger Strukturvielfalt kann die Nischendifferenzierung erschweren.</label>
+            </fieldset>
+            <button class="primary" id="checkTransfer" type="button">Prognose prüfen</button><div class="feedback" id="transferFeedback" aria-live="polite"></div>
+            <div class="question"><label for="finalText"><strong>Erläutere die Änderung der Konkurrenz zwischen Kohlmeise und Blaumeise in dem beschriebenen Szenario.</strong></label><textarea id="finalText" rows="5" placeholder="Durch die Veränderungen im Garten …"></textarea><div class="actions"><button class="secondary" id="showModel" type="button">Mit Musterantwort vergleichen</button></div><div id="modelAnswer" class="model" hidden><strong>Musterantwort</strong><p>Durch den Verlust dünner Zweige, alter Bäume und kleiner Höhlenöffnungen stehen weniger unterschiedlich nutzbare Ressourcen zur Verfügung. Die Nischendifferenzierung wird dadurch erschwert und die Nischenüberlappung kann zunehmen. Deshalb ist besonders bei der Nahrungssuche und der Wahl von Nistplätzen mit stärkerer Konkurrenz zu rechnen; eine Art muss dadurch jedoch nicht zwangsläufig verdrängt werden.</p></div></div>
+            <div class="completion" id="completion"><h3>Lernweg abgeschlossen</h3><p>Du kannst nun Lebensraum und ökologische Nische unterscheiden und Koexistenz durch Nischendifferenzierung erklären.</p></div>
+            <details class="sources"><summary>Fachliche Hinweise und Quellen</summary><p>Die dargestellten Nutzungsmuster sind typische Tendenzen, keine unveränderlichen Artgrenzen. Fachlicher Hintergrund: Fraticelli &amp; Guerrieri (1988), <a href="https://www.avocetta.org/articles/vol-12-2-bwp-aspects-of-the-foraging-niche-of-great-tits-iparus-majoriblue-tits-iparus-caeruleusi-and-long-tailed-titsiaegithalos-caudatusi-in-a-mediterranea-n-wood/" target="_blank" rel="noreferrer">Avocetta</a>; Slagsvold &amp; Wiebe (2007), <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1679873/" target="_blank" rel="noreferrer">Learning the ecological niche</a>. Nistkastenmaße nach <a href="https://vogeltrainer.nabu.de/wp-content/uploads/2019/04/NABU_Vogeltrainer_Garten_Bauanleitung_Meisenkasten-final.pdf" target="_blank" rel="noreferrer">NABU</a>. Die Gartenszene ist eine eigens erstellte didaktische Illustration.</p></details>
+          </div>
+          <div class="stage-nav"><button class="secondary prev" type="button">Zurück</button><button class="primary" id="finishBtn" type="button">Lernweg abschließen</button></div>
+        </section>
+      </article>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

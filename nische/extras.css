@@ -1,0 +1,74 @@
+.worksheet-prompt {
+  padding: 18px 20px;
+  border-left: 5px solid var(--petrol);
+  border-radius: 0 12px 12px 0;
+  background: #eef7f7;
+}
+
+.worksheet-prompt h3,
+.worksheet-prompt p {
+  margin-top: 0;
+}
+
+.worksheet-prompt p:last-child {
+  margin-bottom: 0;
+}
+
+.mapping-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.mapping-grid label {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.5fr) 34px minmax(220px, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fbfb;
+}
+
+.mapping-grid label > span {
+  font-weight: 700;
+}
+
+.mapping-grid label > b {
+  text-align: center;
+  color: var(--petrol);
+  font-size: 1.3rem;
+}
+
+.mapping-grid select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.mapping-grid select.correct {
+  border: 2px solid var(--good);
+  background: var(--goodbg);
+}
+
+.mapping-grid select.wrong {
+  border: 2px solid var(--bad);
+  background: #fdebea;
+}
+
+.concept-strip[hidden] {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  .mapping-grid label {
+    grid-template-columns: 1fr;
+  }
+
+  .mapping-grid label > b {
+    transform: rotate(90deg);
+  }
+}
