@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marienkäfer und Blattläuse · Diagrammwerkstatt</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f4ec;color:#192f2a;font:16px/1.55 "Source Sans 3","Segoe UI",sans-serif}header{background:#173c34;color:white;padding:24px max(5vw,calc((100vw - 1040px)/2));border-bottom:5px solid #d9b76c}header small{color:#c7dcd1;letter-spacing:.09em}h1,h2,h3,p{margin:0 0 .6em}h1{font:clamp(32px,5vw,48px)/1.15 Georgia,serif;margin:8px 0}main{width:min(1040px,92%);margin:22px auto 45px}nav,.actions,.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center}button,select,input,textarea{font:inherit;color:inherit}button,select{padding:9px 13px;border:1px solid #869d91;border-radius:7px;background:white}button{cursor:pointer}button:disabled{opacity:.55;cursor:default}nav{padding-bottom:20px}nav button[aria-current=step],.primary{background:#215649;color:white;border-color:#215649}button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #b4601e;outline-offset:2px}.panel,figure{background:#fff;border:1px solid #ced9ce;border-radius:12px;padding:clamp(15px,3vw,29px);margin:0 0 14px}h2{font:600 clamp(23px,3vw,31px)/1.2 Georgia,serif}h3{font-size:1.1rem}.eyebrow{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:#426455;font-weight:700}.legend{gap:6px 20px;font-size:.9rem}.key:before{content:"";display:inline-block;width:23px;margin-right:6px;vertical-align:middle;border-top:3px solid var(--c)}.dash:before{border-top-style:dashed}svg{display:block;width:100%;user-select:none}svg.edit{touch-action:none;cursor:crosshair}.muted,figcaption{font-size:.9rem;color:#4c6459}summary{cursor:pointer;font-weight:600;padding:7px 0}textarea{width:100%;display:block;border:1px solid #95a99e;border-radius:7px;margin:6px 0 14px;padding:10px;min-height:68px;resize:vertical}label{font-weight:600}input[type=number]{width:70px;border:1px solid #95a99e;padding:5px;border-radius:4px}.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px}.values label{font-size:.86rem}.values input{display:block}table{border-collapse:collapse}th,td{padding:4px 15px;border-bottom:1px solid #dde4dc;text-align:right}.feedback{color:#733b12;font-weight:600;margin:.5em 0}.success{color:#215649}.ring{display:grid;grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr);grid-template-rows:auto 32px auto;align-items:center;text-align:center;gap:4px;max-width:750px;margin:20px auto}.node{background:#eef4ea;padding:12px;border:1px solid #adbfaf;border-radius:9px}.node select{width:100%;padding:6px;font-size:.95rem}.arrow{font-size:1.55rem;color:#315e51}.actions{margin-top:18px}footer{font-size:.82rem;color:#52655a;margin-top:20px}footer button{font-size:inherit;background:transparent}details{margin:8px 0}[hidden]{display:none!important}@media(max-width:550px){main{width:96%}nav{gap:5px}nav button{font-size:.81rem;padding:7px}.ring{gap:2px;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr)}.node{padding:4px}.node select{font-size:.81rem;padding:5px 0}.panel,figure{padding:13px}.key{font-size:.82rem}}
+#scene{padding:0;border:0;margin:0}#scene img{width:100%;height:auto;display:block;border-radius:8px}#intro:has(#scene:not([hidden])){display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:20px}#scene figcaption{margin-top:5px}@media(max-width:650px){#intro:has(#scene:not([hidden])){grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><small>BIOLOGIE · Q2 GRUNDKURS</small><h1>Marienkäfer und Blattläuse</h1><div>Diagrammwerkstatt · Räuber und Beute</div></header>
+<main>
+<p id="previewLabel" class="muted" hidden>Testmodus aktiv · Alle Schritte und die Beispielerklärung sind frei zugänglich.</p><nav aria-label="Arbeitsschritte"><button>1 · Vorhersagen</button><button>2 · Vergleichen</button><button>3 · Wirkungsdiagramm</button></nav>
+<section class="panel" id="intro"><div><h2 id="heading"></h2><p id="lead"></p></div><figure id="scene"><img src="bohnentrieb.png" width="1536" height="1024" alt="Links sitzt ein Siebenpunkt-Marienkäfer auf einem Blatt. Rechts sammeln sich Schwarze Bohnenläuse am jungen Trieb derselben Bohnenpflanze."><figcaption>Siebenpunkt-Marienkäfer und Schwarze Bohnenläuse auf einer Ackerbohne · KI-Illustration</figcaption></figure></section>
+<figure id="figure"><div class="eyebrow">Modellpopulationen · 12 Wochen</div><div class="legend"><span class="key" style="--c:#12705a">Blattläuse (Beute)</span><span class="key dash" style="--c:#7048ac">Marienkäfer · deine Vorhersage</span><span id="modelKey" class="key" style="--c:#b05019">Marienkäfer · Modell</span></div>
+<svg id="plot" role="img" aria-label="Bestandsindex im Zeitverlauf"></svg>
+<figcaption>Didaktisch konstruierte Modelldaten. Der Index beschreibt die relative Bestandsgröße jeder Art. Ein gleicher Indexwert kann bei beiden Arten unterschiedlichen Tierzahlen entsprechen.</figcaption>
+<details style="overflow-x:auto"><summary>Daten als Tabelle lesen</summary><table id="data"></table></details></figure>
+<section id="prediction" class="panel">
+<h3>Zeichne deine Vorhersage für die Marienkäfer.</h3><p>Setze für jede Woche von 0 bis 12 einen Punkt ins Diagramm oder ziehe die Kurve mit Maus oder Finger. Einzelne Punkte kannst du durch Antippen verschieben.</p>
+<details id="numeric"><summary>Kurve über Zahlenwerte eingeben</summary><div class="values" id="values"></div></details>
+<p class="muted" id="progress"></p>
+<label for="reason">Begründe, warum du diesen Verlauf erwartest.</label><textarea id="reason"></textarea>
+<details><summary>Denkhilfe</summary>Wovon hängt es ab, ob Marienkäferlarven überleben und sich zu Käfern entwickeln? Überlege, wann sich eine Veränderung im Bestand zeigen könnte.</details>
+<div class="actions"><button class="primary" id="reveal">Vorhersage festhalten und Modelldaten aufdecken</button></div><p class="feedback" id="firstMsg" role="status"></p></section>
+<section id="comparison" class="panel" hidden><h3>Was zeigen die Daten?</h3>
+<details><summary>Meine ursprüngliche Begründung lesen</summary><p id="original"></p></details>
+<p>Untersuche die erste Welle (Woche 0 bis 6). In welcher Woche ist der Blattlausbestand am größten? Wann erreicht der Marienkäferbestand sein Maximum?</p>
+<div class="actions"><label>Blattläuse <input type="number" min="0" max="6" id="peakB"></label><label>Marienkäfer <input type="number" min="0" max="6" id="peakR"></label></div>
+<p>Vergleiche nun deine Vorhersage mit der Modellkurve der Marienkäfer. Belege eine Übereinstimmung oder Abweichung mit der Woche und den beiden Indexwerten.</p><label for="compare">Mein Vergleich</label><textarea id="compare"></textarea>
+<details><summary>Hilfe zum Vergleichen</summary>Wähle eine Woche. Lies dort den Wert deiner gestrichelten Kurve und den Wert der orangefarbenen Kurve ab. Was fällt dir auf?</details>
+<button id="toRing" class="primary">Vergleich prüfen und weiter</button><p id="secondMsg" class="feedback" role="status"></p></section>
+<section id="diagram" class="panel" hidden><h3>Wie hängen die Bestandsänderungen zusammen?</h3>
+<p>Beginne oben links mit einer wachsenden Blattlauspopulation. Ergänze die drei Felder im Uhrzeigersinn, sodass sich der Kreis schließt. Jeder Pfeil bedeutet „trägt im Modell dazu bei, dass …“.</p>
+<div class="ring"><div class="node"><strong>Mehr Blattläuse</strong></div><span class="arrow">→</span><div class="node"><select id="slot1" aria-label="Zweite Station oben rechts"></select></div><span class="arrow">↑</span><span></span><span class="arrow">↓</span><div class="node"><select id="slot3" aria-label="Vierte Station unten links"></select></div><span class="arrow">←</span><div class="node"><select id="slot2" aria-label="Dritte Station unten rechts"></select></div></div>
+<label for="explain">Erkläre zwei Pfeile mit eigenen Worten. Wie beeinflusst die Zahl der Blattläuse den Marienkäferbestand? Wie wirkt sich dessen Veränderung auf die Blattläuse aus?</label><textarea id="explain"></textarea>
+<details><summary>Denkhilfe</summary>Denke beim ersten Pfeil an Nahrungsangebot, Überleben und Fortpflanzung. Verfolge beim zweiten Pfeil, wie sich die Zahl der gefressenen Blattläuse verändert.</details>
+<button class="primary" id="check">Wirkungsdiagramm prüfen</button><p id="thirdMsg" class="feedback" role="status"></p><details id="solution" hidden><summary>Meine Erklärung mit einer Beispielerklärung vergleichen</summary>Bei reichlich Blattläusen finden Marienkäferlarven leichter Nahrung. Mehr Larven können überleben und sich zu Käfern entwickeln. So kann der Marienkäferbestand mit Verzögerung wachsen. Fressen die Käfer und ihre Larven mehr Blattläuse, als hinzukommen, sinkt der Blattlausbestand. Werden Blattläuse knapp, finden auch die Larven weniger Nahrung. Der Marienkäferbestand kann zurückgehen. Dadurch werden weniger Blattläuse gefressen und ihr Bestand kann wieder wachsen. Das Modell vereinfacht weitere Einflüsse wie Wetter und andere Nahrungsquellen.</details><details id="rule" hidden><summary>Vom Bohnenbeet zur ersten Lotka-Volterra-Regel</summary><p>Vergleiche die beiden Wellen. Bei den Blattläusen liegen die Höchstwerte in Woche 2 und Woche 9. Bei den Marienkäfern folgen sie in Woche 4 und Woche 11. Der Abstand beträgt in diesem Beispiel jeweils zwei Wochen.</p><p><strong>Erste Lotka-Volterra-Regel (Periodizitätsregel).</strong> Unter konstanten Umweltbedingungen schwanken im idealisierten Räuber-Beute-Modell die Bestände beider Populationen periodisch. Die Maxima der Räuberpopulation folgen zeitversetzt auf die Maxima der Beutepopulation.</p><p>Die Kurven im Bohnenbeet veranschaulichen dieses Muster mit konstruierten Daten. In einem realen Beet verändern etwa die Witterung und die Zuwanderung von Marienkäfern den Verlauf.</p></details></section>
+<footer><button id="reset">Werkstatt neu beginnen</button></footer></main>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const prey = [32,54,80,68,46,26,18,38,64,88,73,48,27];
+const predators = [26,20,31,51,67,56,37,23,20,34,54,71,59];
+const storageKey = 'gk-diagrammwerkstatt-bohnenbeet-wochen-v1';
+const fresh = () => ({points:Array(13).fill(null),reason:'',compare:'',explain:'',peakB:'',peakR:'',slots:['','',''],stage:0,unlocked:0,done:false});
+const preview = false;
+$('previewLabel').hidden=!preview;
+let state = fresh();
+try { const prior=JSON.parse(localStorage.getItem(storageKey)); if(!preview && prior && prior.points?.length===13 && prior.slots?.length===3) Object.assign(state,prior); } catch {}
+function save(){if(preview)return;try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}}
+const nav=[...document.querySelectorAll('nav button')];
+const titles=['Was passiert im Bohnenbeet?','Wie gut passt deine Vorhersage?','Welche Wirkungen schließen den Kreis?'];
+const leads=['An den jungen Trieben von Bohnenpflanzen saugen Schwarze Bohnenläuse Pflanzensaft. Auf denselben Pflanzen jagen Siebenpunkt-Marienkäfer und ihre Larven nach den Blattläusen. Die grüne Kurve zeigt, wie sich der Blattlausbestand im Modell über zwölf Wochen entwickelt. Wie könnte sich im selben Zeitraum der Bestand der Marienkäfer entwickeln?','Deine Vorhersage bleibt gestrichelt sichtbar. Vergleiche sie mit den aufgedeckten Modelldaten.','Nutze deine Beobachtungen aus dem Diagramm, um die wechselseitige Wirkung beider Populationen zu erklären.'];
+const colors={prey:'#12705a',prediction:'#7048ac',predator:'#b05019'};
+const plot=$('plot');
+let layout;
+function modelVisible(){return preview ? state.stage === 1 : state.unlocked > 0;}
+function draw(){
+ if($('figure').hidden)return;
+ const w=Math.max(270,Math.floor(plot.getBoundingClientRect().width)),h=w<520?240:305;
+ const l=39,r=w-13,t=27,b=h-38;
+ const x=i=>l+i*(r-l)/12,y=v=>b-v*(b-t)/100;
+ layout={l,r,t,b,w,h};
+ plot.setAttribute('viewBox','0 0 '+w+' '+h);
+ const line=(a,c,d,e,color)=>'<line x1="'+a+'" y1="'+c+'" x2="'+d+'" y2="'+e+'" stroke="'+color+'"/>';
+ const label=(a,c,s,align='middle')=>'<text x="'+a+'" y="'+c+'" text-anchor="'+align+'" fill="#456056" font-size="12">'+s+'</text>';
+ let svg=label(3,14,'Bestandsindex','start');
+ for(let v=0;v<=100;v+=20)svg+=line(l,y(v),r,y(v),'#cfdad3')+label(l-6,y(v)+4,v,'end');
+ for(let i=0;i<=12;i++)svg+=line(x(i),t,x(i),b,'#edf0eb')+label(x(i),b+16,i);
+ svg+=label((l+r)/2,h-3,'Zeit in Wochen');
+ function series(values,color,dashed){
+  let path='';
+  values.forEach((v,i)=>{if(v!==null)path+=(i===0||values[i-1]===null?'M':'L')+x(i)+' '+y(v)+' ';});
+  return '<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="3" '+(dashed?'stroke-dasharray="7 5"':'')+'/>'+values.map((v,i)=>v===null?'':'<circle cx="'+x(i)+'" cy="'+y(v)+'" r="'+(dashed?3:2)+'" fill="'+color+'"/>').join('');
+ }
+ svg+=series(prey,colors.prey,false);
+ if(modelVisible())svg+=series(predators,colors.predator,false);
+ svg+=series(state.points,colors.prediction,true);
+ plot.innerHTML=svg;
+}
+function refreshData(){
+ $('progress').textContent=state.points.filter(v=>v!==null).length+' von 13 Zeitpunkten eingezeichnet.';
+ $('data').innerHTML='<tr><th>Woche</th><th>Blattläuse</th><th>Vorhersage</th>'+(modelVisible()?'<th>Marienkäfer</th>':'')+'</tr>'+prey.map((v,i)=>'<tr><td>'+i+'</td><td>'+v+'</td><td>'+(state.points[i]??'–')+'</td>'+(modelVisible()?'<td>'+predators[i]+'</td>':'')+'</tr>').join('');
+ draw();
+}
+function show(stage){
+ state.stage=stage;
+ $('scene').hidden=stage!==0;
+ nav.forEach((btn,i)=>{btn.disabled=!preview && i>state.unlocked;btn.setAttribute('aria-current',i===stage?'step':'false');});
+ $('heading').textContent=titles[stage];$('lead').textContent=leads[stage];
+ ['prediction','comparison','diagram'].forEach((id,i)=>$(id).hidden=i!==stage);
+ $('figure').hidden=stage===2;$('modelKey').hidden=!modelVisible();
+ $('reveal').textContent=state.unlocked?'Weiter zum Vergleich':'Vorhersage festhalten und Modelldaten aufdecken';
+ $('reason').readOnly=!!state.unlocked;
+ document.querySelectorAll('#values input').forEach(el=>el.disabled=!!state.unlocked);
+ plot.classList.toggle('edit',!state.unlocked);
+ $('original').textContent=state.reason;
+ $('rule').hidden=$('solution').hidden=!preview && !state.done;
+ if(preview){$('reveal').textContent='Modelldaten ansehen';$('toRing').textContent='Zum Wirkungsdiagramm';$('original').textContent=state.reason || 'Noch keine Begründung eingetragen.';if(stage===1 && state.points.every(v=>v===null))$('lead').textContent='Die orange Kurve zeigt die Modelldaten der Marienkäfer. Eine eigene Vorhersage kannst du im ersten Schritt ergänzen.';}
+ refreshData();save();
+}
+function navigate(i){show(i);window.scrollTo(0,0);}
+nav.forEach((btn,i)=>btn.onclick=()=>navigate(i));
+for(const key of ['reason','compare','explain','peakB','peakR']){
+ $(key).value=state[key];
+ $(key).oninput=()=>{state[key]=$(key).value;save();};
+}
+prey.forEach((_,i)=>{
+ const wrap=document.createElement('label');wrap.textContent='Woche '+i;
+ const field=document.createElement('input');field.type='number';field.min=0;field.max=100;field.step=1;field.value=state.points[i]??'';
+ field.oninput=()=>{state.points[i]=field.value!==''&&field.validity.valid?Number(field.value):null;refreshData();save();};
+ wrap.append(field);$('values').append(wrap);
+});
+let last=null,active=null;
+function mark(e){
+ const rect=plot.getBoundingClientRect(),{l,r,t,b}=layout;
+ const index=Math.max(0,Math.min(12,Math.round((e.clientX-rect.left-l)/(r-l)*12)));
+ const value=Math.max(0,Math.min(100,Math.round((b-e.clientY+rect.top)/(b-t)*100)));
+ const set=(i,v)=>{state.points[i]=v;$('values').children[i].querySelector('input').value=v;};
+ if(last && index!==last.index){
+  const sign=Math.sign(index-last.index);
+  for(let i=last.index+sign;i!==index;i+=sign)set(i,Math.round(last.value+(value-last.value)*(i-last.index)/(index-last.index)));
+ }
+ set(index,value);last={index,value};refreshData();
+}
+plot.onpointerdown=e=>{if(state.unlocked||active!==null||e.button!==0)return;active=e.pointerId;plot.setPointerCapture(active);last=null;mark(e);};
+plot.onpointermove=e=>{if(active===e.pointerId)mark(e);};
+plot.onlostpointercapture=()=>{active=null;last=null;save();};
+$('reveal').onclick=()=>{
+ if(preview){navigate(1);return;}
+ if(state.points.includes(null)||!state.reason.trim()){ $('firstMsg').textContent='Trage für jede Woche einen Indexwert von 0 bis 100 ein und begründe deine Vorhersage.';return;}
+ $('firstMsg').textContent='';state.unlocked=Math.max(1,state.unlocked);navigate(1);
+};
+$('toRing').onclick=()=>{
+ if(preview){navigate(2);return;}
+ if(Number(state.peakB)!==2||Number(state.peakR)!==4){$('secondMsg').textContent='Prüfe beide Maxima innerhalb der ersten sechs Wochen. Lies unter jedem höchsten Punkt die Woche ab.';return;}
+ if(!state.compare.trim()){$('secondMsg').textContent='Halte deinen Vergleich mit einem konkreten Datenbeleg fest.';return;}
+ $('secondMsg').textContent='';state.unlocked=2;navigate(2);
+};
+const options={'r+':'Mehr Marienkäfer','r−':'Weniger Marienkäfer','b−':'Weniger Blattläuse'};
+const orders=[['b−','r−','r+'],['r−','r+','b−'],['r+','b−','r−']];
+orders.forEach((order,i)=>{
+ const el=$('slot'+(i+1));el.add(new Option('Auswählen …',''));
+ order.forEach(k=>el.add(new Option(options[k],k)));el.value=state.slots[i];
+ el.onchange=()=>{state.slots[i]=el.value;state.done=false;$('rule').hidden=$('solution').hidden=!preview;$('solution').open=false;$('thirdMsg').textContent='';save();};
+});
+$('check').onclick=()=>{
+ const msg=$('thirdMsg');msg.classList.remove('success');
+ if(state.slots.some(v=>!v)){msg.textContent='Ergänze alle drei Felder.';return;}
+ if(state.slots.join('/')!=='r+/b−/r−'){msg.textContent='Prüfe jeden Pfeil in Leserichtung. Überlege, welche Population jeweils auf die andere reagiert.';return;}
+ if(!state.explain.trim()){msg.textContent='Dein Kreis stimmt. Begründe nun zwei Pfeile.';return;}
+ state.done=true;msg.classList.add('success');msg.textContent='Dein Wirkungsdiagramm ist richtig angeordnet. Prüfe deine Begründung anhand der Beispielerklärung.';$('rule').hidden=$('solution').hidden=false;save();
+};
+$('reset').onclick=()=>{if(confirm('Alle Eingaben auf diesem Gerät löschen und neu beginnen?')){state=fresh();save();location.reload();}};
+new ResizeObserver(draw).observe(plot.parentElement);
+show(state.stage);
+</script>
+</body></html>
