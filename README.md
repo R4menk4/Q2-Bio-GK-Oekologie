@@ -18,3 +18,6 @@ Die Datei `index.html` im Browser öffnen. Die Unterordner und Dateien dürfen d
 5. Mit **Save** bestätigen.
 
 Nach der Veröffentlichung führt die Startseite zu beiden Lernprogrammen.
+
+## Regelwerkstatt: Lotka-Volterra 2 und 3
+Kachel 04 öffnet regelwerkstatt/. Geführter GK-Lernweg mit Mittelwertvergleich, Entnahmeversuch, Erklärungen und Modellkritik. Unterrichtsmodus aktiv, Testmodus deaktiviert. Lokale Entwurfsquelle: UE5_Raeuber_und_Beute/Regelwerkstatt. Eingaben bleiben lokal im Browser; keine Serverübertragung. Quelle und Modellgrenzen sind im Programm dokumentiert.
