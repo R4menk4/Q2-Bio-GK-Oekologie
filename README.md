@@ -21,3 +21,7 @@ Nach der Veröffentlichung führt die Startseite zu beiden Lernprogrammen.
 
 ## Regelwerkstatt: Lotka-Volterra 2 und 3
 Kachel 04 öffnet regelwerkstatt/. Geführter GK-Lernweg mit Mittelwertvergleich, Entnahmeversuch, Erklärungen und Modellkritik. Unterrichtsmodus aktiv, Testmodus deaktiviert. Lokale Entwurfsquelle: UE5_Raeuber_und_Beute/Regelwerkstatt. Eingaben bleiben lokal im Browser; keine Serverübertragung. Quelle und Modellgrenzen sind im Programm dokumentiert.
+
+## Tangwald vernetzt
+
+Kachel 05 öffnet `nahrungsnetz/` im Unterrichtsmodus. Die [Tafelversion zum Wiesenbeispiel](https://r4menk4.github.io/Q2-Bio-GK-Nahrungsnetz-Tafel/) hat ein eigenes Repository.
